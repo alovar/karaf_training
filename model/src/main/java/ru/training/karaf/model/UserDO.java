@@ -1,16 +1,9 @@
 package ru.training.karaf.model;
 
+import java.util.List;
 import java.util.Set;
 
-import javax.persistence.CollectionTable;
-import javax.persistence.Column;
-import javax.persistence.ElementCollection;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.NamedQueries;
-import javax.persistence.NamedQuery;
+import javax.persistence.*;
 
 @Entity
 @NamedQueries({
@@ -32,6 +25,9 @@ public class UserDO {
     private String login;
     private Integer age;
     private String address;
+
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "user")
+    private List<TagDO> tags;
 
     @ElementCollection
     @CollectionTable(name = "user_properties",
@@ -82,6 +78,11 @@ public class UserDO {
     public void setProperties(Set<String> properties) {
         this.properties = properties;
     }
+
+    public List<TagDO> getTags() {
+        return tags;
+    }
+
     @Override
     public int hashCode() {
         final int prime = 31;
@@ -138,9 +139,18 @@ public class UserDO {
             return other.properties == null;
         } else return properties.equals(other.properties);
     }
+
     @Override
     public String toString() {
-        return "UserDO [id=" + id + ", firstName=" + firstName + ", lastName=" + lastName + ", login=" + login
-                + ", age=" + age + ", address=" + address + ", properties=" + properties + "]";
+        return "UserDO{" +
+                "id=" + id +
+                ", firstName='" + firstName + '\'' +
+                ", lastName='" + lastName + '\'' +
+                ", login='" + login + '\'' +
+                ", age=" + age +
+                ", address='" + address + '\'' +
+                ", tags=" + tags +
+                ", properties=" + properties +
+                '}';
     }
 }

@@ -10,6 +10,7 @@ import javax.persistence.NoResultException;
 
 import org.apache.aries.jpa.template.JpaTemplate;
 
+import ru.training.karaf.model.TagDO;
 import ru.training.karaf.model.User;
 import ru.training.karaf.model.UserDO;
 
@@ -48,6 +49,23 @@ public class UserRepoImpl implements UserRepo {
     @Override
     public void delete(String login) {
         template.tx(em -> getByLogin(login, em).ifPresent(em::remove));
+    }
+
+    @Override
+    public void assignTag(String login, String name, String value) {
+        UserDO usr = template.txExpr(em -> {
+            Optional<UserDO> user = getByLogin(login, em);
+            UserDO userDO = user.get();
+            TagDO tagDO = new TagDO();
+            tagDO.setName(name);
+            tagDO.setValue(value);
+            tagDO.setUser(userDO);
+            userDO.getTags().add(tagDO);
+
+            em.persist(userDO);
+            return userDO;
+        });
+        System.out.println(usr); // we have tag in bd but not in user
     }
 
     private Optional<UserDO> getByLogin(String login, EntityManager em) {

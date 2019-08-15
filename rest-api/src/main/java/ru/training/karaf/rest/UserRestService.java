@@ -31,4 +31,8 @@ public interface UserRestService {
     @DELETE
     @Path("{login}")
     void delete(@PathParam("login") String login);
+
+    @POST
+    @Path("{login}/tags")
+    void assignTag(@PathParam("login") String login, String name, String value);
 }

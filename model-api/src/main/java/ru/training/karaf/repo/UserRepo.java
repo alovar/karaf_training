@@ -11,4 +11,5 @@ public interface UserRepo {
     void create(String login, String firstName, String lastName, String address, Integer age, Set<String> properties);
     Optional<? extends User> get(String login);
     void delete(String login);
+    void assignTag(String login, String name, String value);
 }

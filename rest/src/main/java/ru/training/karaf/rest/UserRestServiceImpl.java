@@ -39,4 +39,9 @@ public class UserRestServiceImpl implements UserRestService {
     public void delete(String login) {
         repo.delete(login);
     }
+
+    @Override
+    public void assignTag(String login, String name, String value) {
+        repo.assignTag(login, name, value);
+    }
 }
